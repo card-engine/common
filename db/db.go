@@ -41,6 +41,7 @@ func (dbManager *DBManager) Init(name string, dbType string, dsn string) error {
 			return err
 		}
 		dbManager.redisMap[name] = client
+		return nil
 	default:
 		panic("unsuport sql drive")
 	}
