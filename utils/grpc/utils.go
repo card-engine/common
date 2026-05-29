@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"context"
+	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"sync"
 	"time"
 
@@ -57,6 +58,7 @@ func dialGrpcWithFilter(jobName, name string, ds registry.Discovery, f selector.
 		grpc.WithNodeFilter(f),
 		grpc.WithMiddleware(
 			mmd.Client(),
+			tracing.Client(),
 			metrics.Client(
 				metrics.WithSeconds(metricSeconds),
 				metrics.WithRequests(metricRequests),
