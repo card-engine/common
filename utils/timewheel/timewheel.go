@@ -28,6 +28,7 @@ type TimeWheel struct {
 	callbackChan chan interface{} // 所有 callback 进入这里
 	stopChan     chan struct{}
 	onceStart    sync.Once
+	onceStop     sync.Once
 }
 
 func New(tick time.Duration, slotNum int, callback func(data interface{})) *TimeWheel {
@@ -80,7 +81,9 @@ func (tw *TimeWheel) Start() {
 }
 
 func (tw *TimeWheel) Stop() {
-	close(tw.stopChan)
+	tw.onceStop.Do(func() {
+		close(tw.stopChan)
+	})
 }
 
 // ==============================
